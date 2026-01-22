@@ -1,92 +1,69 @@
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 body {
-  background: linear-gradient(120deg,#fdf6e3,#f5e0c3,#e0cda9);
-  min-height: 100vh;
-  padding: 15px;
-  color: #3e2723;
-}
-
-header {
-  background: linear-gradient(120deg,#6d4c41,#8d6e63,#bcaaa4);
-  color: white;
-  padding: 1.5rem;
-  text-align: center;
-  border-radius: 0 0 15px 15px;
-  margin-bottom: 15px;
-}
-
-#familyForm {
-  background: #fff8f0;
+  background: linear-gradient(120deg,#fdf6e3,#e0cda9);
   padding: 20px;
-  border-radius: 12px;
-  max-width: 500px;
+}
+
+form {
+  background: #fff;
+  padding: 20px;
+  max-width: 420px;
   margin: auto;
-  border: 1px solid #e0cda9;
+  border-radius: 14px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
 }
 
-label {
-  margin-top: 12px;
-  display: block;
-  font-weight: 600;
+h2, h3 {
+  text-align: center;
+  color: #6d4c41;
 }
 
-input, select, button {
+input {
   width: 100%;
   padding: 10px;
-  margin-top: 6px;
+  margin: 6px 0;
   border-radius: 8px;
   border: 1px solid #ccc;
 }
 
 button {
-  background: linear-gradient(135deg,#8d6e63,#bcaaa4);
-  color: white;
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
   border: none;
+  border-radius: 20px;
+  background: #8d6e63;
+  color: white;
+  font-size: 16px;
   cursor: pointer;
-  margin-top: 12px;
+}
+
+button:hover {
+  background: #6d4c41;
 }
 
 .member {
-  background: #fff;
-  padding: 12px;
+  background: #f5f5f5;
+  padding: 10px;
   border-radius: 8px;
-  margin-top: 10px;
-  border: 1px solid #ddd;
+  margin-bottom: 10px;
 }
 
 .member button {
-  background: none;
-  border: none;
-  color: #6d4c41;
-  cursor: pointer;
-  margin-top: 6px;
+  background: #c62828;
 }
 
-/* رسالة النجاح */
-#successToast {
-  position: fixed;
-  bottom: 25px;
-  left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: linear-gradient(135deg,#8d6e63,#bcaaa4);
-  color: white;
-  padding: 12px 22px;
-  border-radius: 30px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  opacity: 0;
-  transition: 0.4s;
-  z-index: 999;
-}
-
-#successToast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+#resultBox {
+  display: none;
+  background: white;
+  padding: 30px;
+  text-align: center;
+  border-radius: 15px;
+  max-width: 420px;
+  margin: auto;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
 }
