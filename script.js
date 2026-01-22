@@ -1,3 +1,16 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+/* Firebase */
+const firebaseConfig = {
+  apiKey: "AIzaSyAb-_6wjv_FA2699wj5X8Fl5G16kAktTs0",
+  authDomain: "church-families-93eef.firebaseapp.com",
+  projectId: "church-families-93eef"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* DOM */
 const form = document.getElementById("familyForm");
 const resultBox = document.getElementById("resultBox");
 const editBtn = document.getElementById("editResponseBtn");
@@ -7,8 +20,10 @@ const addMemberBtn = document.getElementById("addMemberBtn");
 const nameInput = document.getElementById("name");
 const addressInput = document.getElementById("address");
 const phoneInput = document.getElementById("phone");
-const emailInput = document.getElementById("email");
+const regionInput = document.getElementById("region");
 const confessionFatherInput = document.getElementById("confessionFather");
+
+let savedData = null;
 
 /* إضافة عضو */
 addMemberBtn.onclick = () => {
@@ -27,13 +42,8 @@ addMemberBtn.onclick = () => {
 };
 
 /* حفظ البيانات */
-form.onsubmit = (e) => {
+form.onsubmit = async (e) => {
   e.preventDefault();
-
-  if (!emailInput.value.endsWith("@gmail.com")) {
-    alert("من فضلك اكتب Gmail صحيح");
-    return;
-  }
 
   const members = [...membersContainer.children].map(m => ({
     name: m.querySelector(".mName").value,
@@ -43,16 +53,21 @@ form.onsubmit = (e) => {
     confessionFather: m.querySelector(".mFather").value
   }));
 
-  const savedData = {
+  savedData = {
     name: nameInput.value,
     address: addressInput.value,
     phone: phoneInput.value,
-    email: emailInput.value,
+    region: regionInput.value,
     confessionFather: confessionFatherInput.value,
     members
   };
 
-  localStorage.setItem("churchForm", JSON.stringify(savedData));
+  /* حفظ على Firebase */
+  try {
+    await addDoc(collection(db,"families"), savedData);
+  } catch(err) {
+    console.error("Error saving to Firebase:", err);
+  }
 
   form.style.display = "none";
   resultBox.style.display = "block";
@@ -60,17 +75,17 @@ form.onsubmit = (e) => {
 
 /* تعديل الرد */
 editBtn.onclick = () => {
-  const data = JSON.parse(localStorage.getItem("churchForm"));
-  if (!data) return;
+  resultBox.style.display = "none";
+  form.style.display = "block";
 
-  nameInput.value = data.name;
-  addressInput.value = data.address;
-  phoneInput.value = data.phone;
-  emailInput.value = data.email;
-  confessionFatherInput.value = data.confessionFather;
+  nameInput.value = savedData.name;
+  addressInput.value = savedData.address;
+  phoneInput.value = savedData.phone;
+  regionInput.value = savedData.region;
+  confessionFatherInput.value = savedData.confessionFather;
 
   membersContainer.innerHTML = "";
-  data.members.forEach(m => {
+  savedData.members.forEach(m => {
     addMemberBtn.click();
     const last = membersContainer.lastElementChild;
     last.querySelector(".mName").value = m.name;
@@ -79,7 +94,4 @@ editBtn.onclick = () => {
     last.querySelector(".mPhone").value = m.phone;
     last.querySelector(".mFather").value = m.confessionFather;
   });
-
-  resultBox.style.display = "none";
-  form.style.display = "block";
 };
